@@ -7,6 +7,8 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
@@ -22,7 +24,8 @@ public class GUI extends Application {
   private Scene scene;
   private Group group;
   private PerspectiveCamera camera;
-  private MeshView currentMesh;
+  private MeshView currentMesh; // 3D mesh of terrain.
+  private VBox vBox;
   private Terrain terrain = new Terrain();
 
   public static void main(String args[]) {
@@ -46,7 +49,9 @@ public class GUI extends Application {
     camera.setRotationAxis(Rotate.X_AXIS);
     camera.setRotate(-35);
 
-    scene = new Scene(group, 1000, 720, true, SceneAntialiasing.BALANCED);
+    vBox = new VBox(group);
+
+    scene = new Scene(vBox, 1000, 720, true, SceneAntialiasing.BALANCED);
     scene.setFill(Color.SKYBLUE);
     scene.setCamera(camera);
 
@@ -61,7 +66,6 @@ public class GUI extends Application {
     group.getChildren().add(currentMesh);
 
     toggleKeyEvents();
-    toggleMouseEvents();
   }
 
   /**
@@ -113,17 +117,6 @@ public class GUI extends Application {
             camera.setRotate(camera.getRotate() - 2.0);
           }
         }
-      }
-    });
-  }
-
-  /**
-   * Adds mouse functionality.
-   */
-  private void toggleMouseEvents() {
-    scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
       }
     });
   }
