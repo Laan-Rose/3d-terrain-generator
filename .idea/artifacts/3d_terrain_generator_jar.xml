@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="3d-terrain-generator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/3d_terrain_generator_jar</output-path>
+    <root id="archive" name="3d-terrain-generator.jar">
+      <element id="module-output" name="3d-terrain-generator" />
+    </root>
+  </artifact>
+</component>

@@ -76,7 +76,7 @@ public class Terrain {
       }
     }
 
-    // Finalize miesh and add color to it.
+    // Finalize mesh and add color to it.
     mesh = null;
     mesh = new MeshView(meshBase);
     PhongMaterial color = new PhongMaterial(Color.SANDYBROWN);
