@@ -1,16 +1,15 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
+import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.MeshView;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -24,8 +23,8 @@ public class GUI extends Application {
   private Scene scene;
   private Group group;
   private PerspectiveCamera camera;
-  private MeshView currentMesh; // 3D mesh of terrain.
-  private VBox vBox;
+  private MeshView currentMesh;
+  private Label instructions;
   private Terrain terrain = new Terrain();
 
   public static void main(String args[]) {
@@ -39,19 +38,28 @@ public class GUI extends Application {
   public void start(Stage stage) {
     group = new Group();
 
+    // Create and position camera so that it's looking down on the map.
     camera = new PerspectiveCamera(true);
     camera.setNearClip(0.1);
     camera.setFarClip(100000);
-    // Position camera so that it's looking down on the map.
     camera.setTranslateZ(-13500);
     camera.setTranslateX(6500);
     camera.setTranslateY(-13000);
     camera.setRotationAxis(Rotate.X_AXIS);
     camera.setRotate(-35);
 
-    vBox = new VBox(group);
+    // Display instructions.
+    instructions = new Label("Hit 'enter' to procedurally generate a new piece of terrain.");
+    instructions.setTranslateY(-11300);
+    instructions.setTranslateX(camera.getTranslateX() - 400);
+    instructions.setTranslateZ(-12000);
+    instructions.setRotationAxis(Rotate.X_AXIS);
+    instructions.setRotate(-25);
+    Font labelFont = new Font("Arial Bold", 32);
+    instructions.setFont(labelFont);
 
-    scene = new Scene(vBox, 1000, 720, true, SceneAntialiasing.BALANCED);
+    // Wrap everything together and put it on screen.
+    scene = new Scene(group, 0, 0,true, SceneAntialiasing.BALANCED);
     scene.setFill(Color.SKYBLUE);
     scene.setCamera(camera);
 
@@ -61,9 +69,7 @@ public class GUI extends Application {
     stage.show();
 
     // Generate and display a piece of terrain on startup.
-    terrain.generate();
-    currentMesh = terrain.getMesh();
-    group.getChildren().add(currentMesh);
+    updateTerrainMesh();
 
     toggleKeyEvents();
   }
@@ -80,6 +86,7 @@ public class GUI extends Application {
     terrain.generate();
     currentMesh = terrain.getMesh();
     group.getChildren().add(currentMesh);
+    group.getChildren().add(instructions);
   }
 
   /**
@@ -91,31 +98,6 @@ public class GUI extends Application {
       public void handle(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {
           updateTerrainMesh();
-        }
-        // Camera controls.
-        if (e.getCode() == KeyCode.W) {
-          camera.setTranslateZ(camera.getTranslateZ() + 200);
-        }
-        if (e.getCode() == KeyCode.A) {
-          camera.setTranslateX(camera.getTranslateX() - 200);
-        }
-        if (e.getCode() == KeyCode.S) {
-          camera.setTranslateZ(camera.getTranslateZ() - 200);
-        }
-        if (e.getCode() == KeyCode.D) {
-          camera.setTranslateX(camera.getTranslateX() + 200);
-        }
-        if (e.getCode() == KeyCode.R) {
-          camera.setRotationAxis(Rotate.X_AXIS);
-          if (camera.getRotate() < 0) {
-            camera.setRotate(camera.getRotate() + 2.0);
-          }
-        }
-        if (e.getCode() == KeyCode.F) {
-          camera.setRotationAxis(Rotate.X_AXIS);
-          if (camera.getRotate() >= -150) {
-            camera.setRotate(camera.getRotate() - 2.0);
-          }
         }
       }
     });
